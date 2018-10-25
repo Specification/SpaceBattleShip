@@ -39,6 +39,7 @@ GameObject:
   - component: {fileID: 95181486514730902}
   - component: {fileID: 54815467569259534}
   - component: {fileID: 143689433137242178}
+  - component: {fileID: 111583110650987248}
   m_Layer: 0
   m_Name: UFO
   m_TagString: Untagged
@@ -881,6 +882,20 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!111 &111583110650987248
+Animation:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1182494085569700}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!143 &143689433137242178
 CharacterController:
   m_ObjectHideFlags: 1
