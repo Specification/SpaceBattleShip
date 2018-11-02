@@ -10,6 +10,7 @@ public class CountDownSe : MonoBehaviour
     void Start()
     {
         Sound = GetComponent<AudioSource>();
+        Sound = true;
     }
 
     // Update is called once per frame
