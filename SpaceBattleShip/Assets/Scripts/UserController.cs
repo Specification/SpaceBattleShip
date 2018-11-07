@@ -10,8 +10,14 @@ public class UserController : MonoBehaviour {
     // 走っているかフラグ
     bool m_isRunning;
 
-    // 上キーが離された時間を記録
+    //バックダッシュしてるかフラグ
+    bool m_backDash;
+
+    // 前キーが離された時間を記録
     float m_timeOfKeyUp;
+
+    //後ろキーが離された時間を記録
+    float m_timeOfKeyUp2;
 
     [SerializeField]
     KeyCode m_forwardKey = KeyCode.RightArrow;      //前移動
@@ -60,49 +66,70 @@ public class UserController : MonoBehaviour {
 
             if (m_isRunning)
             {
-                m_playerController.Forward = 5.0f;  // 走っているなら
+                m_playerController.Forward = 10.0f;  // 走っているなら
             }
             else
             {
-                m_playerController.Forward = 1.0f;  // 歩いているなら
+                m_playerController.Forward = 5.0f;  // 歩いているなら
             }
 
+            m_backDash = false;
             //            m_playerController.Forward = 1.0f * 5f; // アナログ値 * 移動量(m/s)←最大値
         }
         else if (Input.GetKey(backKey))
         {
-            m_playerController.Back = 1.0f;
-            m_isRunning = false;
+            if(!m_backDash) //バックダッシュしていないとき
+            {
+                if(Time.time - m_timeOfKeyUp2 < 0.3f)
+                {
+                    m_backDash = true;
+                }
+            }
+
+            if (m_backDash)
+            {
+                m_playerController.Back = 10.0f;
+            }
+            else
+            {
+                m_playerController.Back = 5.0f;
+            }
         }
         else
         {
             m_isRunning = false;
+            m_backDash = false;
         }
 
-        // 右キーが離された
+        // 前キーが離された
         if (Input.GetKeyUp(forwardKey))
         {
             m_timeOfKeyUp = Time.time;
+        }
+        // 後ろキーが離されたとき
+        if (Input.GetKeyUp(backKey))
+        {
+            m_timeOfKeyUp2 = Time.time;
         }
 
 
         // 左右移動(もしくは回転)
         if (Input.GetKey(m_rearKey))
         {
-            m_playerController.Left = 2.0f;
+            m_playerController.Left = 5.0f;
         }
         else if (Input.GetKey(m_frontKey))
         {
-            m_playerController.Right = 2.0f;
+            m_playerController.Right = 5.0f;
         }
 
         if (Input.GetKey(m_upKey))
         {
-            m_playerController.Up = 2.0f;
+            m_playerController.Up = 5.0f;
         }
         else if (Input.GetKey(m_downKey))
         {
-            m_playerController.Down = 2.0f;
+            m_playerController.Down = 5.0f;
         }
     }
 }
