@@ -15,6 +15,10 @@ public class UserController : MonoBehaviour {
 
     // 前キーが離された時間を記録
     float m_timeOfKeyUp;
+    // 攻撃中判定フラグ
+    bool m_isAttacking;
+    // 攻撃インターバル用タイマー
+    float m_attackIntervalTimer;
 
     //後ろキーが離された時間を記録
     float m_timeOfKeyUp2;
@@ -30,8 +34,16 @@ public class UserController : MonoBehaviour {
     [SerializeField]
     KeyCode m_upKey = KeyCode.RightShift;      　　 //上移動
     [SerializeField]
-    KeyCode m_downKey = KeyCode.KeypadEnter;      　//下移動
+    KeyCode m_downKey = KeyCode.KeypadEnter;       //下移動
+    [SerializeField]
+    KeyCode m_attack1Key = KeyCode.K;    //攻撃１
+    [SerializeField]
+    KeyCode m_attack2Key = KeyCode.L;        //攻撃２
 
+
+    float m_attack1Timer;                           // 接近攻撃キー1を押した時刻を記録
+    float m_attack2Timer;                           // 接近攻撃キー2を押した時刻を記録
+    float m_shot1Timaer;                            // 射撃攻撃キーを押した時刻を記録
     float m_forwardTimer;                           // 前キーを押した時刻を記録
     float m_backTimer;                              // 後ろキーを押した時刻を記録
 
@@ -131,5 +143,62 @@ public class UserController : MonoBehaviour {
         {
             m_playerController.Down = 5.0f;
         }
+        // 攻撃処理
+        if (!m_isAttacking && m_attackIntervalTimer <= 0)
+        {
+            // 入力を受け付けた時刻を記録
+            if (Input.GetKeyDown(m_attack1Key))
+            {
+                m_attack1Timer = Time.time;
+            }
+            if (Input.GetKeyDown(m_attack2Key))
+            {
+                m_attack2Timer = Time.time;
+            }
+            if (Input.GetKeyDown(forwardKey))
+            {
+                m_forwardTimer = Time.time;
+            }
+            if (Input.GetKeyDown(backKey))
+            {
+                m_backTimer = Time.time;
+            }
+
+            if (Time.time - m_attack1Timer < 0.3f && Time.time - m_forwardTimer < 0.3f)
+            {
+                UnityAction action = AttackFinished;
+                m_playerController.PlayAnimation("Attack", action);
+                m_isAttacking = true;
+                m_attack1Timer = 0f;
+                m_forwardTimer = 0f;
+            }
+
+            else if (Time.time - m_attack2Timer < 0.3f && Time.time - m_backTimer < 0.3f)
+            {
+                UnityAction action = AttackFinished;
+                m_playerController.PlayAnimation("Attack2", action);
+                m_isAttacking = true;
+                m_attack2Timer = 0f;
+                m_backTimer = 0f;
+
+            }
+        }
+        else
+        {
+            m_attackIntervalTimer -= Time.deltaTime;
+        }
+
+    }
+
+    /// <summary>
+    /// 攻撃が完了したら呼ばれる関数
+    /// </summary>
+    public void AttackFinished()
+    {
+        m_attackIntervalTimer = 0.2f;
+        m_isAttacking = false;
     }
 }
+
+
+

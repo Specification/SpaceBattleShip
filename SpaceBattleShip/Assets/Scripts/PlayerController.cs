@@ -5,7 +5,8 @@ using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
-
+    [SerializeField]
+    GameObject m_syagekitarget;
     /// <summary>
     /// 右にいるのか左にいるのか
     /// </summary>
@@ -28,12 +29,13 @@ public class PlayerController : MonoBehaviour
 
     float m_damegebehaviorTimer;  //ダメージ時移動を制限する時間
 
+    bool m_isPlayingAnimation;	// 強制アニメーション中か
     bool m_swordAnimation1;
     bool m_swordAnimation2;
     bool m_shootingAnimation;
     bool m_canAnimation;
 
-    //SimpleAnimation m_simpleAnimation;  // アニメーション管理変数
+    SimpleAnimation m_simpleAnimation;  // アニメーション管理変数
 
     Rigidbody m_rigidBody;            //リジッドボディ
 
@@ -47,6 +49,7 @@ public class PlayerController : MonoBehaviour
         m_swordAnimation2 = false;
         m_shootingAnimation = false;
         m_canAnimation = true;
+        m_damegebehaviorTimer = 0f;
     }
 
     // Update is called once per frame
@@ -97,6 +100,8 @@ public class PlayerController : MonoBehaviour
             rot.x = 0;
             rot.z = 0;
             transform.rotation = Quaternion.Euler(rot);
+
+
 
             // 移動用変数を0に戻す
             m_forward = 0f;
@@ -185,6 +190,27 @@ public class PlayerController : MonoBehaviour
             return m_sideState;
         }
     }
+    /// <summary>
+    /// アニメーションを再生する.
+    /// </summary>
+    /// <param name="value">Value.</param>
+    /// <param name="callbackMethod">Callback method.</param>
+    public void PlayAnimation(string value, UnityAction callbackMethod)
+    {
+        m_unityEvent.AddListener(callbackMethod);   // コールバック関数の登録
+     //   m_simpleAnimation.CrossFade(value, 0.2f);
+        m_isPlayingAnimation = true;
+    }
+
+    /// <summary>
+    /// アニメーション終了時のイベントを受け取る.
+    /// </summary>
+    public void OnAnimationFinished()
+    {
+        m_unityEvent.Invoke();              // 登録されているコールバック関数の呼び出し
+        m_unityEvent.RemoveAllListeners();  // 登録されていた関数を削除
+        m_isPlayingAnimation = false;       // フラグをfalseに戻す
+    }
 
     void OnTriggerEnter(Collider col)
     {
@@ -194,7 +220,7 @@ public class PlayerController : MonoBehaviour
             {
                 m_rigidBody.AddForce(transform.forward * -5f,
                                         ForceMode.VelocityChange);
-                //m_simpleAnimation.CrossFade("Default", 0.2f);
+                m_simpleAnimation.CrossFade("Default", 0.2f);
                 m_swordAnimation1 = false;
                 m_damegebehaviorTimer = 0.2f;
 
@@ -203,7 +229,7 @@ public class PlayerController : MonoBehaviour
             {
                 m_rigidBody.AddForce(transform.forward * -10f,
                                         ForceMode.VelocityChange);
-                //m_simpleAnimation.CrossFade("Default", 0.2f);
+                m_simpleAnimation.CrossFade("Default", 0.2f);
                 m_swordAnimation2 = false;
                 m_damegebehaviorTimer = 0.2f;
             }

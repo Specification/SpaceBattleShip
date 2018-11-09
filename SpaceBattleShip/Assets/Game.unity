@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -272,6 +272,8 @@ MonoBehaviour:
   m_frontKey: 115
   m_upKey: 304
   m_downKey: 306
+  m_attack1Key: 305
+  m_attack2Key: 307
 --- !u!114 &461830821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -283,6 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af84eee568129e448d26501b8a6332c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_syagekitarget: {fileID: 0}
   m_target: {fileID: 1610741738}
 --- !u!1 &491145181
 GameObject:
@@ -617,6 +620,21 @@ Prefab:
       propertyPath: m_Drag
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 95306231503171106, guid: 9dbc710bf356c8a4aa8ebf185889672c,
+        type: 2}
+      propertyPath: m_UpdateMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 95306231503171106, guid: 9dbc710bf356c8a4aa8ebf185889672c,
+        type: 2}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 95306231503171106, guid: 9dbc710bf356c8a4aa8ebf185889672c,
+        type: 2}
+      propertyPath: m_CullingMode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9dbc710bf356c8a4aa8ebf185889672c, type: 2}
   m_IsPrefabParent: 0
@@ -642,6 +660,8 @@ MonoBehaviour:
   m_frontKey: 274
   m_upKey: 303
   m_downKey: 271
+  m_attack1Key: 107
+  m_attack2Key: 307
 --- !u!114 &1610741740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -653,7 +673,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4af84eee568129e448d26501b8a6332c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_syagekitarget: {fileID: 0}
   m_target: {fileID: 461830815}
+--- !u!114 &1610741741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1610741738}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3759e2aae0f7b9a47bb98fc64bf3c543, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingMode: 1
+  m_WrapMode: 0
+  m_Clip: {fileID: 0}
+  m_States:
+  - clip: {fileID: 0}
+    name: Default
+    defaultState: 1
+  - clip: {fileID: 7400000, guid: fa9121c92c7e1bf4086ea4a38d6543e2, type: 3}
+    name: idol
+    defaultState: 0
+  - clip: {fileID: 7400004, guid: fa9121c92c7e1bf4086ea4a38d6543e2, type: 3}
+    name: Attack
+    defaultState: 0
+  - clip: {fileID: 7400004, guid: fa9121c92c7e1bf4086ea4a38d6543e2, type: 3}
+    name: AttackFinished
+    defaultState: 0
 --- !u!1 &1739480120
 GameObject:
   m_ObjectHideFlags: 0
