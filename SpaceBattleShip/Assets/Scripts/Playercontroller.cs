@@ -46,6 +46,13 @@ public class Playercontroller : MonoBehaviour
 
     HpController m_hpController;
 
+
+
+
+
+
+
+
     // Use this for initialization
     void Start()
     {
@@ -54,6 +61,8 @@ public class Playercontroller : MonoBehaviour
         m_rigidbody = GetComponent<Rigidbody>();
         m_hpController = GetComponent<HpController>();
         m_hp = m_maxhp;    //hp初期値
+
+
     }
 
     // Update is called once per frame
@@ -72,6 +81,8 @@ public class Playercontroller : MonoBehaviour
         {
             m_sideState = SideState.Right;
         }
+
+     
     }
 
     /// <summary>
@@ -280,4 +291,5 @@ public class Playercontroller : MonoBehaviour
 
         }
     }
+
 }
