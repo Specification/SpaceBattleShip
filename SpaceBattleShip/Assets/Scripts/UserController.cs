@@ -13,6 +13,16 @@ public class UserController : MonoBehaviour {
     //バックダッシュしてるかフラグ
     bool m_backDash;
 
+    // 攻撃中判定フラグ
+    bool m_isAttacking;
+
+    //連続弱攻撃の何回目かを判断するフラグ
+    bool m_attack1;     //1回目
+    bool m_attack2;     //2回目
+
+    // 攻撃インターバル用タイマー
+    float m_attackIntervalTimer;
+
     // 前キーが離された時間を記録
     float m_timeOfKeyUp;
 
@@ -30,14 +40,22 @@ public class UserController : MonoBehaviour {
     [SerializeField]
     KeyCode m_upKey = KeyCode.RightShift;      　　 //上移動
     [SerializeField]
-    KeyCode m_downKey = KeyCode.KeypadEnter;      　//下移動
+    KeyCode m_downKey = KeyCode.KeypadEnter;       //下移動
+    [SerializeField]
+    KeyCode m_attack1Key = KeyCode.RightControl;    //攻撃１
+    [SerializeField]
+    KeyCode m_attack2Key = KeyCode.RightAlt;        //攻撃２
 
-    float m_forwardTimer;                           // 前キーを押した時刻を記録
-    float m_backTimer;                              // 後ろキーを押した時刻を記録
+    float m_attack1Timer;                           // 攻撃キーを押した時刻を記録
+    float m_attack2Timer;                           // 攻撃キーを押した時刻を記録
+
+    float m_beforeAttack;
 
     // Use this for initialization
     void Start () {
         m_playerController = GetComponent<PlayerController>();
+        m_attack1 = false;     
+        m_attack2 = false;     
     }
 	
 	// Update is called once per frame
@@ -57,7 +75,7 @@ public class UserController : MonoBehaviour {
         {
             if (!m_isRunning)   // 走っていない時
             {
-                if (Time.time - m_timeOfKeyUp < 0.3f)
+                if (Time.realtimeSinceStartup - m_timeOfKeyUp < 0.3f)
                 {
                     // 前回キーが押されてから0.3秒未満にもう一度押されたなら走る
                     m_isRunning = true;
@@ -80,7 +98,7 @@ public class UserController : MonoBehaviour {
         {
             if(!m_backDash) //バックダッシュしていないとき
             {
-                if(Time.time - m_timeOfKeyUp2 < 0.3f)
+                if(Time.realtimeSinceStartup - m_timeOfKeyUp2 < 0.3f)
                 {
                     m_backDash = true;
                 }
@@ -104,12 +122,12 @@ public class UserController : MonoBehaviour {
         // 前キーが離された
         if (Input.GetKeyUp(forwardKey))
         {
-            m_timeOfKeyUp = Time.time;
+            m_timeOfKeyUp = Time.realtimeSinceStartup;
         }
         // 後ろキーが離されたとき
         if (Input.GetKeyUp(backKey))
         {
-            m_timeOfKeyUp2 = Time.time;
+            m_timeOfKeyUp2 = Time.realtimeSinceStartup;
         }
 
 
@@ -131,5 +149,82 @@ public class UserController : MonoBehaviour {
         {
             m_playerController.Down = 5.0f;
         }
+
+        // 攻撃処理
+        if (!m_isAttacking && m_attackIntervalTimer <= 0)
+        {
+
+            // 入力を受け付けた時刻を記録
+            if (Input.GetKeyDown(m_attack1Key))
+            {
+                m_attack1Timer = Time.realtimeSinceStartup;
+            }
+            if (Input.GetKeyDown(m_attack2Key))
+            {
+                m_attack2Timer = Time.realtimeSinceStartup;
+            }
+
+            if (m_attack1Timer - m_beforeAttack > 1f)
+            {
+                Debug.Log("リセット");
+                m_attack1 = false;
+                m_attack2 = false;
+            }
+
+            if (Time.realtimeSinceStartup - m_attack1Timer < 0.2f)
+            {
+                UnityAction action = AttackFinished;
+
+                if (!m_attack1)
+                {
+                    Debug.Log("Attack1");
+                    m_playerController.PlayAnimation("Attack1", action);
+                    m_attack1 = true;
+                    m_beforeAttack = m_attack1Timer;
+                }
+
+                else if (m_attack1 && !m_attack2 && m_attack1Timer - m_beforeAttack <= 1f)
+                {
+                    Debug.Log("Attack2");
+                    m_playerController.PlayAnimation("Attack2", action);
+                    m_attack2 = true;
+                    m_beforeAttack = m_attack1Timer;
+                }
+                
+                else if (m_attack1 && m_attack2 && m_attack1Timer - m_beforeAttack <= 1f)
+                {
+                    Debug.Log("Attack3");
+                    m_playerController.PlayAnimation("Attack3", action);
+                    m_attack1 = false;
+                    m_attack2 = false;
+                }
+
+                
+
+                m_isAttacking = true;
+                
+            }
+
+            else if (Time.realtimeSinceStartup - m_attack2Timer < 0.3f )
+            {
+                UnityAction action = AttackFinished;
+                Debug.Log("Attack4");
+                m_playerController.PlayAnimation("Attack4", action);
+                m_isAttacking = true;
+                m_attack2Timer = 0f;
+            }
+        }
+        else
+        {
+            m_attackIntervalTimer -= Time.deltaTime;
+        }
+    }
+    /// <summary>
+    /// 攻撃が完了したら呼ばれる関数
+    /// </summary>
+    public void AttackFinished()
+    {
+        m_attackIntervalTimer = 0.1f;
+        m_isAttacking = false;
     }
 }

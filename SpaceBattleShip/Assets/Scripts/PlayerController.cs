@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     GameObject m_target;    //対戦相手
 
+    //[SerializeField]
+    //BoxCollider m_swordAttackCollider;  // 剣攻撃用コライダー
+
     float m_forward = 0f;   // 前進用変数
     float m_back = 0f;   // 後退用変数
     float m_left = 0f;   // 左移動用変数
@@ -26,14 +29,15 @@ public class PlayerController : MonoBehaviour
     float m_up = 0f;       // 上移動
     float m_down = 0f;      //下移動
 
-    float m_damegebehaviorTimer;  //ダメージ時移動を制限する時間
-
+    float m_damegebehaviorTimer1;  //ダメージ時移動を制限する時間
+    float m_damegebehaviorTimer2;  //ダメージ時攻撃を制限する時間
+    bool m_isPlayingAnimation;	// 強制アニメーション中か
     bool m_swordAnimation1;
     bool m_swordAnimation2;
     bool m_shootingAnimation;
     bool m_canAnimation;
 
-    //SimpleAnimation m_simpleAnimation;  // アニメーション管理変数
+    SimpleAnimation m_simpleAnimation;  // アニメーション管理変数
 
     Rigidbody m_rigidBody;            //リジッドボディ
 
@@ -43,10 +47,13 @@ public class PlayerController : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        m_rigidBody = GetComponent<Rigidbody>();
+        m_simpleAnimation = GetComponent<SimpleAnimation>();
+        //m_swordAttackCollider.enabled = false;
+
         m_swordAnimation1 = false;
         m_swordAnimation2 = false;
-        m_shootingAnimation = false;
-        m_canAnimation = true;
+        m_damegebehaviorTimer1 = 0f;
     }
 
     // Update is called once per frame
@@ -70,7 +77,7 @@ public class PlayerController : MonoBehaviour
     }
     void Move()
     {
-        if (m_damegebehaviorTimer <= 0) {
+        if (Time.time - m_damegebehaviorTimer1 >= 0.3f) {
             // 前移動
             transform.position += transform.forward * m_forward * Time.deltaTime;
 
@@ -97,8 +104,12 @@ public class PlayerController : MonoBehaviour
             rot.x = 0;
             rot.z = 0;
             transform.rotation = Quaternion.Euler(rot);
+            if (!m_isPlayingAnimation)
+            {
+                m_simpleAnimation.CrossFade("Default", 0.2f);
 
-            // 移動用変数を0に戻す
+            }
+                // 移動用変数を0に戻す
             m_forward = 0f;
             m_back = 0f;
             m_left = 0f;
@@ -106,10 +117,7 @@ public class PlayerController : MonoBehaviour
             m_up = 0f;
             m_down = 0f;
         }
-        else
-        {
-            m_damegebehaviorTimer -= Time.deltaTime; 
-        }
+        
     }
     /// <summary>
     /// 前移動命令.
@@ -185,6 +193,66 @@ public class PlayerController : MonoBehaviour
             return m_sideState;
         }
     }
+    /// <summary>
+    /// アニメーションを再生する.
+    /// </summary>
+    /// <param name="value">Value.</param>
+    /// <param name="callbackMethod">Callback method.</param>
+    public void PlayAnimation(string value, UnityAction callbackMethod)
+    {
+
+        //強弱どちらのアニメーションをしているのかを判断
+        if (value == "Attack1" || value == "Attack2" || value == "Attack3")
+        { 
+            m_swordAnimation1 = true;
+        }
+        else if(value == "Attack4")
+        {   
+            m_swordAnimation2 = true;
+        }
+        
+
+        if (Time.time - m_damegebehaviorTimer2 >= 0.3f)
+        {
+            m_unityEvent.AddListener(callbackMethod);   // コールバック関数の登録
+            m_simpleAnimation.CrossFade(value, 0.2f);
+            m_isPlayingAnimation = true;
+
+        }
+        
+
+    }
+
+    /// <summary>
+    /// アニメーション終了時のイベントを受け取る.
+    /// </summary>
+    public void OnAnimationFinished()
+    {
+        m_unityEvent.Invoke();              // 登録されているコールバック関数の呼び出し
+        m_unityEvent.RemoveAllListeners();  // 登録されていた関数を削除
+        m_swordAnimation1 = false;
+        m_swordAnimation2 = false;
+        m_isPlayingAnimation = false;		// フラグをfalseに戻す
+    }
+    /// <summary>
+    /// 当たり判定開始
+    /// </summary>
+    /*public void StartAttack()
+    {
+
+        m_swordAttackCollider.enabled = true;
+
+    }
+
+    /// <summary>
+    /// 当たり判定終了
+    /// </summary>
+    public void EndAttack()
+    {
+        m_swordAttackCollider.enabled = false;
+
+    }
+    */
 
     void OnTriggerEnter(Collider col)
     {
@@ -194,26 +262,28 @@ public class PlayerController : MonoBehaviour
             {
                 m_rigidBody.AddForce(transform.forward * -5f,
                                         ForceMode.VelocityChange);
-                //m_simpleAnimation.CrossFade("Default", 0.2f);
+                m_simpleAnimation.CrossFade("Default", 0.2f);
                 m_swordAnimation1 = false;
-                m_damegebehaviorTimer = 0.2f;
+                m_damegebehaviorTimer1 = Time.time;
+                m_damegebehaviorTimer2 = Time.time;
 
             }
-            if (m_swordAnimation2)
+            else if (m_swordAnimation2)
             {
                 m_rigidBody.AddForce(transform.forward * -10f,
                                         ForceMode.VelocityChange);
-                //m_simpleAnimation.CrossFade("Default", 0.2f);
+                m_simpleAnimation.CrossFade("Default", 0.2f);
                 m_swordAnimation2 = false;
-                m_damegebehaviorTimer = 0.2f;
+                m_damegebehaviorTimer1 = Time.time;
+                m_damegebehaviorTimer2 = Time.time;
             }
         }
 
-        if (col.gameObject.tag == "Shooting1")
+        if (col.gameObject.tag == "Shooting")
         {
-            //m_simpleAnimation.CrossFade("Default", 0.2f);
-            m_shootingAnimation = false;
-            m_damegebehaviorTimer = 0.2f;
+            m_simpleAnimation.CrossFade("Default", 0.2f);
+            m_damegebehaviorTimer1 = Time.time;
+            m_damegebehaviorTimer2 = Time.time;
         }
     }
 }
