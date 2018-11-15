@@ -12,8 +12,11 @@ public class Playercontroller : MonoBehaviour
     }
     SideState m_sideState = SideState.Left;
 
-    [SerializeField]
-    BoxCollider m_swordattacCollider;
+  //  [SerializeField]
+ //   BoxCollider m_swordattacCollider;
+
+   // [SerializeField]
+  //  BoxCollider m_BulletattacCollider;
 
     [SerializeField]
     GameObject m_target;
@@ -57,7 +60,8 @@ public class Playercontroller : MonoBehaviour
     void Start()
     {
        // m_simpleAnimation = GetComponent<SimpleAnimation>();
-        m_swordattacCollider.enabled = false;
+       // m_swordattacCollider.enabled = false;
+       // m_BulletattacCollider.enabled = false;
         m_rigidbody = GetComponent<Rigidbody>();
         m_hpController = GetComponent<HpController>();
         m_hp = m_maxhp;    //hp初期値
@@ -259,7 +263,8 @@ public class Playercontroller : MonoBehaviour
     public void StartAttack()
     {
         Debug.Log("StartAttack");
-        m_swordattacCollider.enabled = true;
+       // m_swordattacCollider.enabled = true;
+       // m_BulletattacCollider.enabled = false;
     }
 
     /// <summary>
@@ -268,7 +273,8 @@ public class Playercontroller : MonoBehaviour
     public void EndAttack()
     {
         Debug.Log("EndAttack");
-        m_swordattacCollider.enabled = false;
+        //m_swordattacCollider.enabled = false;
+       // m_BulletattacCollider.enabled = false;
     }
     void OnTriggerEnter(Collider col)
     {
@@ -282,6 +288,24 @@ public class Playercontroller : MonoBehaviour
 
             //damage処理
             m_hp -= 6f;
+            if (m_hp < 0)
+            {
+                m_hp = 0f;
+            }
+
+            m_hpController.Set(m_hp / m_maxhp);
+
+        }
+        if (col.gameObject.tag == "Shooting")
+        {
+            m_rigidbody.AddForce(transform.forward * -10f, ForceMode.VelocityChange);
+
+            GameObject effect = Instantiate(m_hitEf, col.ClosestPointOnBounds(transform.position), transform.rotation);
+
+            Destroy(effect, 1f);
+
+            //damage処理
+            m_hp -= 2f;
             if (m_hp < 0)
             {
                 m_hp = 0f;

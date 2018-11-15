@@ -34,9 +34,13 @@ public class UserController : MonoBehaviour
     KeyCode m_attack1key = KeyCode.Q;   //前
     [SerializeField]
     KeyCode m_attack2key = KeyCode.E;   //前
+    [SerializeField]
+    KeyCode m_shootingkey = KeyCode.Z;   //前
 
     float m_attack1Timer;
     float m_attack2Timer;
+    float m_shootingTimer;
+
     float m_forwardTimer;
     float m_backTimer;
 
@@ -116,9 +120,10 @@ public class UserController : MonoBehaviour
         {
             m_playerController.Down = 2.0f;
         }
-
+        //攻撃中かインターバルじゃなかったら攻撃できる。
         if (!m_isAttacking && m_attackIntervalTimer <= 0)
         {
+
             if (Input.GetKeyDown(m_attack1key))
             {
                 m_attack1Timer = Time.time;
@@ -159,6 +164,8 @@ public class UserController : MonoBehaviour
         {
             m_attackIntervalTimer -= Time.deltaTime;
         }
+
+
     }
 
     /// <summary>
