@@ -342,6 +342,7 @@ MonoBehaviour:
   m_downKey: 306
   m_attack1Key: 305
   m_attack2Key: 32
+  AttackKey: 0
 --- !u!114 &579541119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -549,9 +550,9 @@ MonoBehaviour:
   m_AnimatePhysics: 0
   m_CullingMode: 1
   m_WrapMode: 0
-  m_Clip: {fileID: 7400000, guid: a7d52c81c7268a5479c4d3794e792e51, type: 3}
+  m_Clip: {fileID: 7400000, guid: 19f3f8514d99689478b00485b17b22f4, type: 3}
   m_States:
-  - clip: {fileID: 7400000, guid: a7d52c81c7268a5479c4d3794e792e51, type: 3}
+  - clip: {fileID: 7400000, guid: 19f3f8514d99689478b00485b17b22f4, type: 3}
     name: Default
     defaultState: 1
   - clip: {fileID: 7400000, guid: 84e3401a6863f664f9e5d020de911950, type: 3}
@@ -785,6 +786,7 @@ MonoBehaviour:
   m_downKey: 271
   m_attack1Key: 305
   m_attack2Key: 307
+  AttackKey: 0
 --- !u!114 &1506741247
 MonoBehaviour:
   m_ObjectHideFlags: 0

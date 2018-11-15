@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class UserAttackController : MonoBehaviour {
+public class UserAttackController : MonoBehaviour
+{
 
     AttackController m_attackController;
 
@@ -28,14 +29,16 @@ public class UserAttackController : MonoBehaviour {
     float m_beforeAttack;
 
     // Use this for initialization
-    void Start () {
-        m_attackController = GetComponent <AttackController>();
+    void Start()
+    {
+        m_attackController = GetComponent<AttackController>();
         m_attack1 = false;
         m_attack2 = false;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         // 攻撃処理
         if (!m_isAttacking && m_attackIntervalTimer <= 0)
         {
@@ -114,4 +117,5 @@ public class UserAttackController : MonoBehaviour {
         m_isAttacking = false;
     }
 }
+
 

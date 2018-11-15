@@ -46,6 +46,9 @@ public class UserController : MonoBehaviour {
     [SerializeField]
     KeyCode m_attack2Key = KeyCode.RightAlt;        //攻撃２
 
+    [SerializeField]
+    KeyCode AttackKey;  //なんの攻撃を繰り出したか
+
     float m_attack1Timer;                           // 攻撃キーを押した時刻を記録
     float m_attack2Timer;                           // 攻撃キーを押した時刻を記録
 
@@ -123,6 +126,7 @@ public class UserController : MonoBehaviour {
         if (Input.GetKeyUp(forwardKey))
         {
             m_timeOfKeyUp = Time.realtimeSinceStartup;
+            AttackKey = forwardKey;
         }
         // 後ろキーが離されたとき
         if (Input.GetKeyUp(backKey))

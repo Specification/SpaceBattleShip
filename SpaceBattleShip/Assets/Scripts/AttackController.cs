@@ -48,7 +48,6 @@ public class AttackController : MonoBehaviour {
             m_swordAnimation2 = true;
         }
 
-
         if (Time.time - m_damegebehaviorTimer2 >= 0.3f)
         {
             m_unityEvent.AddListener(callbackMethod);   // コールバック関数の登録
@@ -70,6 +69,7 @@ public class AttackController : MonoBehaviour {
         m_swordAnimation1 = false;
         m_swordAnimation2 = false;
         m_isPlayingAnimation = false;		// フラグをfalseに戻す
+        m_simpleAnimation.CrossFade("Default", 0.2f);
     }
     /// <summary>
     /// 当たり判定開始
