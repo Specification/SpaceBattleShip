@@ -22,6 +22,9 @@ public class PlayerController : MonoBehaviour
     //[SerializeField]
     //BoxCollider m_swordAttackCollider;  // 剣攻撃用コライダー
 
+    [SerializeField]
+    AttackController m_attackController;
+
     float m_forward = 0f;   // 前進用変数
     float m_back = 0f;   // 後退用変数
     float m_left = 0f;   // 左移動用変数
@@ -55,6 +58,8 @@ public class PlayerController : MonoBehaviour
         m_swordAnimation1 = false;
         m_swordAnimation2 = false;
         m_damegebehaviorTimer1 = 0f;
+
+        
     }
 
     // Update is called once per frame
@@ -75,6 +80,12 @@ public class PlayerController : MonoBehaviour
         else
         {
             m_sideState = SideState.Right;
+        }
+
+        if (!m_isPlayingAnimation)
+        {
+            m_simpleAnimation.CrossFade("Default", 0.2f);
+
         }
     }
     void Move()
@@ -106,11 +117,7 @@ public class PlayerController : MonoBehaviour
             rot.x = 0;
             rot.z = 0;
             transform.rotation = Quaternion.Euler(rot);
-            if (!m_isPlayingAnimation)
-            {
-                m_simpleAnimation.CrossFade("Default", 0.2f);
-
-            }
+            
             // 移動用変数を0に戻す
             m_forward = 0f;
             m_back = 0f;
@@ -217,10 +224,9 @@ public class PlayerController : MonoBehaviour
         if (Time.time - m_damegebehaviorTimer2 >= 0.3f)
         {
             m_unityEvent.AddListener(callbackMethod);   // コールバック関数の登録
-            
             m_simpleAnimation.CrossFade(value, 0.2f);
+            m_attackController.Attack(value, callbackMethod);
             m_isPlayingAnimation = true;
-
         }
         
 

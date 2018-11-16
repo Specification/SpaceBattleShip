@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 646be1b8f20e68145a07a63925b47924
-timeCreated: 1542335374
+guid: db0240b26a522d7458bc2da3a9073aff
+timeCreated: 1542344321
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
@@ -14,8 +14,7 @@ ModelImporter:
     100012: "\u30B8\u30E7\u30A4\u30F3\u30C8"
     100014: "\u30B8\u30E7\u30A4\u30F3\u30C8_1"
     100016: "\u30B8\u30E7\u30A4\u30F3\u30C8_2"
-    100018: "\u30B8\u30E7\u30A4\u30F3\u30C8_2_2"
-    100020: "\u30B8\u30E7\u30A4\u30F3\u30C8_3"
+    100018: "\u30B8\u30E7\u30A4\u30F3\u30C8_3"
     400000: kansetu
     400002: ken
     400004: //RootNode
@@ -25,8 +24,7 @@ ModelImporter:
     400012: "\u30B8\u30E7\u30A4\u30F3\u30C8"
     400014: "\u30B8\u30E7\u30A4\u30F3\u30C8_1"
     400016: "\u30B8\u30E7\u30A4\u30F3\u30C8_2"
-    400018: "\u30B8\u30E7\u30A4\u30F3\u30C8_2_2"
-    400020: "\u30B8\u30E7\u30A4\u30F3\u30C8_3"
+    400018: "\u30B8\u30E7\u30A4\u30F3\u30C8_3"
     2100000: No Name
     4300000: ude1
     4300002: kansetu
@@ -66,42 +64,7 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations:
-    - serializedVersion: 16
-      name: CINEMA_4D____
-      takeName: CINEMA_4D____
-      firstFrame: 0
-      lastFrame: 14
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events:
-      - time: 1
-        functionName: OnAnimationFinished
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+    clipAnimations: []
     isReadable: 1
   meshes:
     lODScreenPercentages: []

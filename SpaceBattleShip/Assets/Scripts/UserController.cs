@@ -46,6 +46,9 @@ public class UserController : MonoBehaviour {
     [SerializeField]
     KeyCode m_attack2Key = KeyCode.RightAlt;        //攻撃２
 
+    
+    
+
     [SerializeField]
     KeyCode AttackKey;  //なんの攻撃を繰り出したか
 
@@ -57,6 +60,7 @@ public class UserController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         m_playerController = GetComponent<PlayerController>();
+          
         m_attack1 = false;     
         m_attack2 = false;     
     }
