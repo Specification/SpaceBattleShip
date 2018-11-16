@@ -95,7 +95,7 @@ public class UserController : MonoBehaviour {
             }
 
             m_backDash = false;
-            //            m_playerController.Forward = 1.0f * 5f; // アナログ値 * 移動量(m/s)←最大値
+            // m_playerController.Forward = 1.0f * 5f; // アナログ値 * 移動量(m/s)←最大値
         }
         else if (Input.GetKey(backKey))
         {
@@ -217,6 +217,8 @@ public class UserController : MonoBehaviour {
                 m_isAttacking = true;
                 m_attack2Timer = 0f;
             }
+
+
         }
         else
         {

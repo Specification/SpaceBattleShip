@@ -1,45 +1,51 @@
 fileFormatVersion: 2
-guid: 646be1b8f20e68145a07a63925b47924
-timeCreated: 1542335374
+guid: 4f2e30a75508db94aa6236f483590c5c
+timeCreated: 1542329380
 licenseType: Free
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: kansetu
-    100002: ken
-    100004: //RootNode
-    100006: te
-    100008: ude1
-    100010: ude2
-    100012: "\u30B8\u30E7\u30A4\u30F3\u30C8"
-    100014: "\u30B8\u30E7\u30A4\u30F3\u30C8_1"
-    100016: "\u30B8\u30E7\u30A4\u30F3\u30C8_2"
-    100018: "\u30B8\u30E7\u30A4\u30F3\u30C8_2_2"
-    100020: "\u30B8\u30E7\u30A4\u30F3\u30C8_3"
-    400000: kansetu
-    400002: ken
-    400004: //RootNode
-    400006: te
-    400008: ude1
-    400010: ude2
-    400012: "\u30B8\u30E7\u30A4\u30F3\u30C8"
-    400014: "\u30B8\u30E7\u30A4\u30F3\u30C8_1"
-    400016: "\u30B8\u30E7\u30A4\u30F3\u30C8_2"
-    400018: "\u30B8\u30E7\u30A4\u30F3\u30C8_2_2"
-    400020: "\u30B8\u30E7\u30A4\u30F3\u30C8_3"
+    100000: ufo
+    100002: //RootNode
+    100004: "\u30B9\u30D7\u30E9\u30A4\u30F3"
+    100006: "\u5186\u67F1"
+    100008: "\u5BFE\u79F0"
+    100010: "\u7403\u4F53"
+    100012: "\u7403\u4F53_1"
+    100014: "\u7403\u4F53_2"
+    100016: "\u7403\u4F53_3"
+    100018: "\u7403\u4F53_4"
+    400000: ufo
+    400002: //RootNode
+    400004: "\u30B9\u30D7\u30E9\u30A4\u30F3"
+    400006: "\u5186\u67F1"
+    400008: "\u5BFE\u79F0"
+    400010: "\u7403\u4F53"
+    400012: "\u7403\u4F53_1"
+    400014: "\u7403\u4F53_2"
+    400016: "\u7403\u4F53_3"
+    400018: "\u7403\u4F53_4"
     2100000: No Name
-    4300000: ude1
-    4300002: kansetu
-    4300004: ude2
-    4300006: te
-    4300008: ken
+    2300000: "\u5186\u67F1"
+    2300002: "\u7403\u4F53"
+    2300004: "\u7403\u4F53_1"
+    2300006: "\u7403\u4F53_2"
+    2300008: "\u7403\u4F53_3"
+    2300010: "\u7403\u4F53_4"
+    3300000: "\u5186\u67F1"
+    3300002: "\u7403\u4F53"
+    3300004: "\u7403\u4F53_1"
+    3300006: "\u7403\u4F53_2"
+    3300008: "\u7403\u4F53_3"
+    3300010: "\u7403\u4F53_4"
+    4300000: "\u7403\u4F53_4"
+    4300002: "\u7403\u4F53_3"
+    4300004: "\u7403\u4F53_2"
+    4300006: "\u7403\u4F53_1"
+    4300008: "\u7403\u4F53"
+    4300010: "\u5186\u67F1"
     7400000: CINEMA_4D____
     9500000: //RootNode
-    13700000: kansetu
-    13700002: ken
-    13700004: te
-    13700006: ude1
-    13700008: ude2
   externalObjects: {}
   materials:
     importMaterials: 1
@@ -51,7 +57,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    motionNodeName: 
+    motionNodeName: "ufo/\u7403\u4F53_2"
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
@@ -66,7 +72,35 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: CINEMA_4D____
+      takeName: CINEMA_4D____
+      firstFrame: 0
+      lastFrame: 90
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
     isReadable: 1
   meshes:
     lODScreenPercentages: []

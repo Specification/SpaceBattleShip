@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
         m_simpleAnimation = GetComponent<SimpleAnimation>();
         //m_swordAttackCollider.enabled = false;
 
+        m_isPlayingAnimation = false;
         m_swordAnimation1 = false;
         m_swordAnimation2 = false;
         m_damegebehaviorTimer1 = 0f;
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         Move(); // 移動処理
 
         // 右にいるのか左にいるのかを判定
@@ -109,7 +111,7 @@ public class PlayerController : MonoBehaviour
                 m_simpleAnimation.CrossFade("Default", 0.2f);
 
             }
-                // 移動用変数を0に戻す
+            // 移動用変数を0に戻す
             m_forward = 0f;
             m_back = 0f;
             m_left = 0f;
@@ -215,11 +217,13 @@ public class PlayerController : MonoBehaviour
         if (Time.time - m_damegebehaviorTimer2 >= 0.3f)
         {
             m_unityEvent.AddListener(callbackMethod);   // コールバック関数の登録
+            
             m_simpleAnimation.CrossFade(value, 0.2f);
             m_isPlayingAnimation = true;
 
         }
         
+
 
     }
 

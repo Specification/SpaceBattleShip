@@ -8,6 +8,9 @@ public class AttackController : MonoBehaviour {
     [SerializeField]
     BoxCollider m_swordAttackCollider;  // 剣攻撃用コライダー
 
+    [SerializeField]
+    BoxCollider m_ufoColoder;       
+
     float m_damegebehaviorTimer1;  //ダメージ時移動を制限する時間
     float m_damegebehaviorTimer2;  //ダメージ時攻撃を制限する時間
     bool m_isPlayingAnimation;	// 強制アニメーション中か
@@ -24,7 +27,7 @@ public class AttackController : MonoBehaviour {
     void Start () {
         m_simpleAnimation = GetComponent<SimpleAnimation>();
         m_swordAttackCollider.enabled = false;
-
+        m_isPlayingAnimation = false;
         m_swordAnimation1 = false;
         m_swordAnimation2 = false;
         m_damegebehaviorTimer1 = 0f;
@@ -32,8 +35,12 @@ public class AttackController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        if (!m_isPlayingAnimation)
+        {
+            m_simpleAnimation.CrossFade("Default", 0.2f);
+
+        }
+    }
 
     public void PlayAnimation(string value, UnityAction callbackMethod)
     {
@@ -69,7 +76,7 @@ public class AttackController : MonoBehaviour {
         m_swordAnimation1 = false;
         m_swordAnimation2 = false;
         m_isPlayingAnimation = false;		// フラグをfalseに戻す
-        m_simpleAnimation.CrossFade("Default", 0.2f);
+        
     }
     /// <summary>
     /// 当たり判定開始
@@ -88,5 +95,34 @@ public class AttackController : MonoBehaviour {
     {
         m_swordAttackCollider.enabled = false;
 
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.tag == "Sword")
+        {
+            if (m_swordAnimation1)
+            {               
+                m_simpleAnimation.CrossFade("Default", 0.2f);
+                m_swordAnimation1 = false;
+                m_damegebehaviorTimer1 = Time.time;
+                m_damegebehaviorTimer2 = Time.time;
+
+            }
+            else if (m_swordAnimation2)
+            {
+                m_simpleAnimation.CrossFade("Default", 0.2f);
+                m_swordAnimation2 = false;
+                m_damegebehaviorTimer1 = Time.time;
+                m_damegebehaviorTimer2 = Time.time;
+            }
+        }
+
+        if (col.gameObject.tag == "Shooting")
+        {
+            m_simpleAnimation.CrossFade("Default", 0.2f);
+            m_damegebehaviorTimer1 = Time.time;
+            m_damegebehaviorTimer2 = Time.time;
+        }
     }
 }
