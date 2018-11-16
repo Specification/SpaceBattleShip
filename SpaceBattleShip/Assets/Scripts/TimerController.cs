@@ -28,13 +28,15 @@ public class TimerController: MonoBehaviour
     // Update is called once per frame
     void Update ()
     {
-        //カウントダウン開始
+        //カウントダウンが続く間ifが続く
         if (totalTime>0)
         {
+            //1秒ずつ減少させる
+            //int型に変えつつ、0が表示されないように処理する
             totalTime -= Time.deltaTime;
-            seconds = (int)totalTime+1;
+            seconds = (int)totalTime+1;　
 
-            //ifからは行動開始、elseはプレイヤーの行動は不可
+            //ifからは行動開始、elseの間はプレイヤーの行動は不可
             if (totalTime <= 0)
             {
                 //PL1.enabled = true;

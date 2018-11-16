@@ -6,8 +6,7 @@ using UnityEngine.UI;
 public class HPBar: MonoBehaviour
 {
 
-    [SerializeField]
-    RectTransform m_hpUI;       // HP表示用
+    public RectTransform m_hpUI;       // HP表示用
 
     [SerializeField]
     RectTransform m_damegeUI;   // HPのダメージ表示用
