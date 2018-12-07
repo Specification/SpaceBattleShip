@@ -8,11 +8,16 @@ public class GoScreen : MonoBehaviour
     [SerializeField]
     public float m_Time;
 
+
+    [SerializeField]
+    SelectManager m_selectManager;
+
 	// Use this for initialization
 	void Start ()
     {
-		
-	}
+        m_selectManager.enabled = false;
+
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -20,11 +25,14 @@ public class GoScreen : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Q))
         {
             transform.position += new Vector3(0, 1080*m_Time, 0);
+            m_selectManager.enabled = true;
         }
 
         if (Input.GetKeyDown(KeyCode.O))
         {
             transform.position += new Vector3(0, -1080 * m_Time, 0);
+            m_selectManager.RemoveCharacters();
+            m_selectManager.enabled = false;
         }
     }
 }

@@ -91,6 +91,9 @@ public class SelectManager : MonoBehaviour
                 // トランジション
                 TransitionManager.Instance.Fade(new Color(0, 0, 0, 0), new Color(0, 0, 0, 1), 2f, callbackMethod);
 
+                Destroy(m_charcter[0]); //破棄
+                Destroy(m_charcter[1]); //破棄
+
                 m_state = State.Selected;
 
                 return;
@@ -206,8 +209,6 @@ public class SelectManager : MonoBehaviour
             m_charcter[0].GetComponent<PlayerController>().m_Target = gameObject;
         }
 
-
-
         if (m_loadedCharcter[1] != m_2PSelect)  //違うキャラなら読み込み
         {
             m_loadedCharcter[1] = m_2PSelect;
@@ -232,12 +233,16 @@ public class SelectManager : MonoBehaviour
         //m_1PSelect = PlayerPrefs.GetInt("Character1");
         //m_2PSelect = PlayerPrefs.GetInt("Character2");
 
-
-
         //シーンの切り替え
         SceneManager.LoadScene("Game");
     }
 
-
+    public void RemoveCharacters()
+    {
+        Destroy(m_charcter[0]); //破棄
+        Destroy(m_charcter[1]); //破棄
+        m_loadedCharcter[0] = -1;
+        m_loadedCharcter[1] = -1;
+    }
 
 }
