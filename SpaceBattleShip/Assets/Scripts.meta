@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 5ea490c2f2045724c9fb3a2e5ba080fe
 folderAsset: yes
 timeCreated: 1539822649
+=======
+guid: d20e3443eb006324f907fd2aed21f513
+folderAsset: yes
+timeCreated: 1541031129
+>>>>>>> 柴田秋専用
 licenseType: Free
 DefaultImporter:
   externalObjects: {}

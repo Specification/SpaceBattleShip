@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 4af84eee568129e448d26501b8a6332c
 timeCreated: 1540991659
+=======
+guid: 7c0ad3bed9842ca4bac6993f421afd8a
+timeCreated: 1542327213
+>>>>>>> 柴田秋専用
 licenseType: Free
 MonoImporter:
   externalObjects: {}
