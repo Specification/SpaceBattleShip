@@ -29,25 +29,24 @@ public class UserController : MonoBehaviour {
     //後ろキーが離された時間を記録
     float m_timeOfKeyUp2;
 
-    [SerializeField]
-    KeyCode m_forwardKey = KeyCode.RightArrow;      //前移動
-    [SerializeField]
-    KeyCode m_backKey = KeyCode.LeftArrow;          //後ろ移動
-    [SerializeField]
-    KeyCode m_rearKey = KeyCode.UpArrow;            //奥移動
-    [SerializeField]
-    KeyCode m_frontKey = KeyCode.DownArrow;         //手前移動
-    [SerializeField]
-    KeyCode m_upKey = KeyCode.RightShift;      　　 //上移動
-    [SerializeField]
-    KeyCode m_downKey = KeyCode.KeypadEnter;       //下移動
-    [SerializeField]
-    KeyCode m_attack1Key = KeyCode.RightControl;    //攻撃１
-    [SerializeField]
-    KeyCode m_attack2Key = KeyCode.RightAlt;        //攻撃２
+    public string JoyStick1LeftHorizontal = "JoyStick1LeftHorizontal";
+
+    public string JoyStick1LeftVertical = "JoyStick1LeftVertical";
+
 
     
+    public KeyCode m_upKey = KeyCode.Joystick1Button7;         //上移動
+
+    public KeyCode m_downKey = KeyCode.Joystick1Button6;       //下移動
     
+    public KeyCode m_attack1Key = KeyCode.Joystick1Button1;    //攻撃１
+
+    public KeyCode m_attack2Key = KeyCode.Joystick1Button2;        //攻撃２
+    
+    // コントローラで入力された値を代入
+    float horizontal;
+    float vertical;
+
 
     [SerializeField]
     KeyCode AttackKey;  //なんの攻撃を繰り出したか
@@ -68,87 +67,25 @@ public class UserController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         // 画面の右左のどちらにいるかで方向キーを入れ替える
-        KeyCode forwardKey = m_forwardKey;
-        KeyCode backKey = m_backKey;
+       // KeyCode forwardKey = m_forwardKey;
+       // KeyCode backKey = m_backKey;
 
+
+
+        
         if (m_playerController.Side == PlayerController.SideState.Right)
         {
-            forwardKey = m_backKey;
-            backKey = m_forwardKey;
+            horizontal = -horizontal;
         }
 
-        // 前後移動
-        if (Input.GetKey(forwardKey))
-        {
-            if (!m_isRunning)   // 走っていない時
-            {
-                if (Time.realtimeSinceStartup - m_timeOfKeyUp < 0.3f)
-                {
-                    // 前回キーが押されてから0.3秒未満にもう一度押されたなら走る
-                    m_isRunning = true;
-                }
-            }
+        horizontal = Input.GetAxis(JoyStick1LeftHorizontal);
+        m_playerController.horizontal = horizontal;
 
-            if (m_isRunning)
-            {
-                m_playerController.Forward = 10.0f;  // 走っているなら
-            }
-            else
-            {
-                m_playerController.Forward = 5.0f;  // 歩いているなら
-            }
+        vertical = Input.GetAxis(JoyStick1LeftVertical);
+        m_playerController.vertical = vertical;
 
-            m_backDash = false;
-            // m_playerController.Forward = 1.0f * 5f; // アナログ値 * 移動量(m/s)←最大値
-        }
-        else if (Input.GetKey(backKey))
-        {
-            if(!m_backDash) //バックダッシュしていないとき
-            {
-                if(Time.realtimeSinceStartup - m_timeOfKeyUp2 < 0.3f)
-                {
-                    m_backDash = true;
-                }
-            }
-
-            if (m_backDash)
-            {
-                m_playerController.Back = 10.0f;
-            }
-            else
-            {
-                m_playerController.Back = 5.0f;
-            }
-        }
-        else
-        {
-            m_isRunning = false;
-            m_backDash = false;
-        }
-
-        // 前キーが離された
-        if (Input.GetKeyUp(forwardKey))
-        {
-            m_timeOfKeyUp = Time.realtimeSinceStartup;
-            AttackKey = forwardKey;
-        }
-        // 後ろキーが離されたとき
-        if (Input.GetKeyUp(backKey))
-        {
-            m_timeOfKeyUp2 = Time.realtimeSinceStartup;
-        }
-
-
-        // 左右移動(もしくは回転)
-        if (Input.GetKey(m_rearKey))
-        {
-            m_playerController.Left = 5.0f;
-        }
-        else if (Input.GetKey(m_frontKey))
-        {
-            m_playerController.Right = 5.0f;
-        }
-
+        
+        // 上下移動
         if (Input.GetKey(m_upKey))
         {
             m_playerController.Up = 5.0f;
@@ -157,8 +94,9 @@ public class UserController : MonoBehaviour {
         {
             m_playerController.Down = 5.0f;
         }
+       
 
-        // 攻撃処理
+        // 攻撃処理--------------------------------------------
         if (!m_isAttacking && m_attackIntervalTimer <= 0)
         {
 
@@ -228,13 +166,17 @@ public class UserController : MonoBehaviour {
         {
             m_attackIntervalTimer -= Time.deltaTime;
         }
+
+        
     }
+    //-----------------------------------------------------------------------------
+
     /// <summary>
     /// 攻撃が完了したら呼ばれる関数
     /// </summary>
     public void AttackFinished()
     {
-        m_attackIntervalTimer = 0.1f;
+        m_attackIntervalTimer = 0.3f;
         m_isAttacking = false;
     }
 }

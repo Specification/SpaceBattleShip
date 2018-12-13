@@ -25,12 +25,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     AttackController m_attackController;
 
-    float m_forward = 0f;   // 前進用変数
-    float m_back = 0f;   // 後退用変数
-    float m_left = 0f;   // 左移動用変数
-    float m_right = 0f;   // 右移動用変数
+    [SerializeField]
+    float m_speed = 10f;
+
+    [SerializeField]
+    GameObject m_hitEffect; //ヒットエフェクト
+
+
     float m_up = 0f;       // 上移動
     float m_down = 0f;      //下移動
+    
+    float m_horizontal;     //前後移動
+    float m_vertical;       //左右移動
 
     float m_damegebehaviorTimer1;  //ダメージ時移動を制限する時間
     float m_damegebehaviorTimer2;  //ダメージ時攻撃を制限する時間
@@ -47,6 +53,12 @@ public class PlayerController : MonoBehaviour
 
     UnityEvent m_unityEvent = new UnityEvent();	// コールバックイベント用
 
+    [SerializeField]
+    float m_maxHP = 100f;        // 最大HP
+    float m_hp;           // HP
+
+    HpController m_hpController;    //HPUI制御用
+
     // Use this for initialization
     void Start()
     {
@@ -59,7 +71,9 @@ public class PlayerController : MonoBehaviour
         m_swordAnimation2 = false;
         m_damegebehaviorTimer1 = 0f;
 
-        
+        m_hpController = GetComponent<HpController>();
+
+        m_hp = 100f;    // HP初期値
     }
 
     // Update is called once per frame
@@ -90,18 +104,15 @@ public class PlayerController : MonoBehaviour
     }
     void Move()
     {
-        if (Time.time - m_damegebehaviorTimer1 >= 0.3f) {
-            // 前移動
-            transform.position += transform.forward * m_forward * Time.deltaTime;
+        
 
-            // 後移動
-            transform.position -= transform.forward * m_back * Time.deltaTime;
-            // SPECIFICATION--
-            // 右移動
-            transform.position += transform.right * m_right * Time.deltaTime;
+        if (Time.time - m_damegebehaviorTimer1 >= 0.3f)
+        {
+            //前後移動
+            transform.position += transform.forward * m_horizontal* m_speed * Time.deltaTime;
 
-            // 左移動
-            transform.position -= transform.right * m_left * Time.deltaTime;
+            //左右移動
+            transform.position += transform.right * m_vertical * m_speed * Time.deltaTime;
 
             //上移動
             transform.position += Vector3.up * m_up * Time.deltaTime;
@@ -109,25 +120,30 @@ public class PlayerController : MonoBehaviour
             //下移動
             transform.position -= Vector3.up * m_down * Time.deltaTime;
 
-            // 相手のほうを向く
-            transform.LookAt(m_target.transform);
-
-            // Y軸以外の回転をなくす
-            Vector3 rot = transform.rotation.eulerAngles;
-            rot.x = 0;
-            rot.z = 0;
-            transform.rotation = Quaternion.Euler(rot);
-            
-            // 移動用変数を0に戻す
-            m_forward = 0f;
-            m_back = 0f;
-            m_left = 0f;
-            m_right = 0f;
             m_up = 0f;
             m_down = 0f;
         }
-        
+
+
     }
+
+    public float horizontal
+    {
+        set
+        {
+            m_horizontal = value;
+        }
+    }
+
+    public float vertical
+    {
+        set
+        {
+            m_vertical = value;
+        }
+    }
+
+    /*
     /// <summary>
     /// 前移動命令.
     /// </summary>
@@ -174,6 +190,7 @@ public class PlayerController : MonoBehaviour
             m_right = value;
         }
     }
+    */
 
     //上移動命令
     public float Up
@@ -189,6 +206,17 @@ public class PlayerController : MonoBehaviour
         set
         {
             m_down = value;
+        }
+    }
+
+    /// <summary>
+    /// ターゲットをセット
+    /// </summary>
+    public GameObject Target
+    {
+        set
+        {
+            m_target = value;
         }
     }
 
@@ -242,7 +270,8 @@ public class PlayerController : MonoBehaviour
         m_unityEvent.RemoveAllListeners();  // 登録されていた関数を削除
         m_swordAnimation1 = false;
         m_swordAnimation2 = false;
-        m_isPlayingAnimation = false;		// フラグをfalseに戻す
+        m_isPlayingAnimation = false;       // フラグをfalseに戻す
+        m_simpleAnimation.CrossFade("Default", 0.2f);
     }
     /// <summary>
     /// 当たり判定開始
@@ -277,6 +306,22 @@ public class PlayerController : MonoBehaviour
                 m_damegebehaviorTimer1 = Time.time;
                 m_damegebehaviorTimer2 = Time.time;
 
+                m_hp -= 10f;
+                if (m_hp < 0)
+                {
+                    m_hp = 0f;
+                }
+
+                //UIに反映
+                m_hpController.Set(m_hp / m_maxHP);
+
+                // エフェクト再生
+                GameObject effect = Instantiate(m_hitEffect,
+                                                col.ClosestPointOnBounds(transform.position),
+                                                transform.rotation);
+
+                Destroy(effect, 1f);    // 1秒後にエフェクトを消す
+
             }
             else if (m_swordAnimation2)
             {
@@ -286,6 +331,22 @@ public class PlayerController : MonoBehaviour
                 m_swordAnimation2 = false;
                 m_damegebehaviorTimer1 = Time.time;
                 m_damegebehaviorTimer2 = Time.time;
+
+                m_hp -= 10f;
+                if (m_hp < 0)
+                {
+                    m_hp = 0f;
+                }
+
+                //UIに反映
+                m_hpController.Set(m_hp / m_maxHP);
+
+                // エフェクト再生
+                GameObject effect = Instantiate(m_hitEffect,
+                                                col.ClosestPointOnBounds(transform.position),
+                                                transform.rotation);
+
+                Destroy(effect, 1f);    // 1秒後にエフェクトを消す
             }
         }
 
@@ -294,6 +355,22 @@ public class PlayerController : MonoBehaviour
             m_simpleAnimation.CrossFade("Default", 0.2f);
             m_damegebehaviorTimer1 = Time.time;
             m_damegebehaviorTimer2 = Time.time;
+
+            m_hp -= 10f;
+            if (m_hp < 0)
+            {
+                m_hp = 0f;
+            }
+
+            //UIに反映
+            m_hpController.Set(m_hp / m_maxHP);
+
+            // エフェクト再生
+            GameObject effect = Instantiate(m_hitEffect,
+                                            col.ClosestPointOnBounds(transform.position),
+                                            transform.rotation);
+
+            Destroy(effect, 1f);    // 1秒後にエフェクトを消す
         }
     }
 }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Cameracontroller : MonoBehaviour {
-    [SerializeField]
-    GameObject m_target1;
+    
+    public GameObject m_target1;
 
-    [SerializeField]
-    GameObject m_target2;
+    
+    public GameObject m_target2;
 
     // Use this for initialization
     void Start()
