@@ -8,6 +8,8 @@ public class GoScreen : MonoBehaviour
     [SerializeField]
     public float m_Time;
 
+    GoScreen m_goScreen;
+
 
     [SerializeField]
     SelectManager m_selectManager;
@@ -24,7 +26,7 @@ public class GoScreen : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Q))
         {
-            transform.position += new Vector3(0, 1080*m_Time, 0);
+            transform.position += new Vector3(0, 1080 * m_Time, 0);
             m_selectManager.enabled = true;
         }
 

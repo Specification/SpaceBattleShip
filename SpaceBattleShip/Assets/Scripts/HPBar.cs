@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class HPBar: MonoBehaviour
 {
-
-    public RectTransform m_hpUI;       // HP表示用
+    [SerializeField]
+    RectTransform m_hpUI;       // HP表示用
 
     [SerializeField]
     RectTransform m_damegeUI;   // HPのダメージ表示用
 
-    // ダメージアニメーション用の変数群
+    //ダメージアニメーション用の変数群
     float m_damegeStartScale = 1f;    // 初期値
     float m_damegeTargetScale;        // 目標値
     float m_damegeAnimationTimer;     // タイマー
@@ -20,7 +20,9 @@ public class HPBar: MonoBehaviour
 
     // Use this for initialization
     void Start()
-    {}
+    {
+
+    }
 
     // Update is called once per frame
     void Update()
@@ -59,7 +61,6 @@ public class HPBar: MonoBehaviour
         m_damegeAnimationTimer = m_damegeAnimationTime;
         // 目標地をセット
         m_damegeTargetScale = value;
-
         // UIに反映
         m_hpUI.localScale = new Vector3(value, 1f, 1f);
 

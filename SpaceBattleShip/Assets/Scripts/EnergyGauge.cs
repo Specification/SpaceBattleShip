@@ -5,11 +5,11 @@ using UnityEngine;
 public class EnergyGauge : MonoBehaviour
 {
     [SerializeField]
-    RectTransform m_egUI;
-    [SerializeField]
-    RectTransform m_weightLossUI;   //減量
+    RectTransform m_egUI;           //EGの量の表記
+    //[SerializeField]
+    //RectTransform m_weightLossUI;   //減量
 
-    float m_weightStartScale = 1f;       //初期値
+    float m_weightStartScale = 1f;   //初期値
     float m_weightTargetScale;      //目標値
     float m_weightAnimationTimer;   //タイマー
 
@@ -43,18 +43,19 @@ public class EnergyGauge : MonoBehaviour
     }
     public void Set(float value)
     {
-        if (m_weightStartScale <= m_egUI.localScale.x)
+        if (m_weightStartScale != m_egUI.localScale.x)
         {
             m_weightStartScale = m_egUI.localScale.x;
-            //タイマーをセット
-            m_weightAnimationTimer = m_weightAnimationTime;
+        }  
+        //タイマーをセット
+        m_weightAnimationTimer = m_weightAnimationTime;
 
-            //目標値をセット
-            m_weightTargetScale = value;
+        //目標値をセット
+        m_weightTargetScale = value;
 
-            //UIに反映
-            m_egUI.localScale = new Vector3(value, 1f, 1f);
-        }
+       　//UIに反映
+        m_egUI.localScale = new Vector3(value, 1f, 1f);
+        
     }
 }
 
