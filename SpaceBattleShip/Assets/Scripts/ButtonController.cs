@@ -2,36 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-<<<<<<< .merge_file_a09376
-using UnityEngine.SceneManagement;
-
-public class ButtonController : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
-    public void ClickedTitle()
-    {
-        SceneManager.LoadScene("");
-    }
-
-    public void ClickedCharacterSelect()
-    {
-        SceneManager.LoadScene("");
-    }
-
-    public void ClickedOneMore()
-    {
-        SceneManager.LoadScene("");
-    }
-=======
 using UnityEngine.Events;
 
 public class ButtonController : MonoBehaviour
@@ -82,5 +52,4 @@ public class ButtonController : MonoBehaviour
         m_selectNumber = Mathf.Clamp(m_selectNumber, 0, m_buttonNum-1);
         m_cursor.anchoredPosition = m_CursorDefaultPosition + new Vector3( 0, m_selectNumber * m_cursorDistance, 0);
 	}
->>>>>>> .merge_file_a06372
 }

@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-<<<<<<< .merge_file_a06132
-=======
-
->>>>>>> .merge_file_a12204
 public class PlayerController : MonoBehaviour
 {
 
@@ -20,9 +16,8 @@ public class PlayerController : MonoBehaviour
     }
     SideState m_sideState = SideState.left;
 
-    [SerializeField]
-<<<<<<< .merge_file_a06132
-    GameObject m_target;    //対戦相手
+    
+    public GameObject m_target;    //対戦相手
 
     //[SerializeField]
     //BoxCollider m_swordAttackCollider;  // 剣攻撃用コライダー
@@ -58,34 +53,15 @@ public class PlayerController : MonoBehaviour
 
     UnityEvent m_unityEvent = new UnityEvent();	// コールバックイベント用
 
-=======
-    public GameObject m_Target;    //対戦相手
-
-
-    [SerializeField]
-    bool m_animationOnly; // アニメーションだけ行い移動処理は行わない
-
-    bool m_isPlayingAnimation; // 強制アニメーション中か
-
-    UnityEvent m_unityEvent = new UnityEvent(); // コールバックイベント用
-
-    SimpleAnimation m_simpleAnimation;  // アニメーション管理変数
-
->>>>>>> .merge_file_a12204
     [SerializeField]
     float m_maxHP = 100f;        // 最大HP
     float m_hp;           // HP
 
-<<<<<<< .merge_file_a06132
     HpController m_hpController;    //HPUI制御用
-=======
-    HPBar m_HPbar;    //HPUI制御用
->>>>>>> .merge_file_a12204
 
     // Use this for initialization
     void Start()
     {
-<<<<<<< .merge_file_a06132
         m_rigidBody = GetComponent<Rigidbody>();
         m_simpleAnimation = GetComponent<SimpleAnimation>();
         //m_swordAttackCollider.enabled = false;
@@ -96,11 +72,6 @@ public class PlayerController : MonoBehaviour
         m_damegebehaviorTimer1 = 0f;
 
         m_hpController = GetComponent<HpController>();
-=======
-        m_simpleAnimation = GetComponent<SimpleAnimation>();
-
-        m_HPbar = GetComponent<HPBar>();
->>>>>>> .merge_file_a12204
 
         m_hp = 100f;    // HP初期値
     }
@@ -108,21 +79,13 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-<<<<<<< .merge_file_a06132
-
-=======
->>>>>>> .merge_file_a12204
         Move(); // 移動処理
 
         // 右にいるのか左にいるのかを判定
         Vector3 screenPos = Camera.main.WorldToScreenPoint(transform.position);
         // 相手のスクリーン座標
-<<<<<<< .merge_file_a06132
         Vector3 targetScreenPos = Camera.main.WorldToScreenPoint(m_target.transform.position);
-=======
-        Vector3 targetScreenPos = Camera.main.WorldToScreenPoint(m_Target.transform.position);
 
->>>>>>> .merge_file_a12204
         // X座標を比較して判定
         if (screenPos.x < targetScreenPos.x)
         {
@@ -132,7 +95,6 @@ public class PlayerController : MonoBehaviour
         {
             m_sideState = SideState.Right;
         }
-<<<<<<< .merge_file_a06132
 
         if (!m_isPlayingAnimation)
         {
@@ -261,32 +223,6 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// 右にいるのか左にいるのか
     /// </summary>
-=======
-    }
-
-    /// <summary>
-    /// 移動.
-    /// </summary>
-    void Move()
-    {
-
-        if (!m_isPlayingAnimation)
-        { // 強制アニメーション中でなければ
-
-            // 相手のほうを向く
-            transform.LookAt(m_Target.transform);
-
-            // Y軸以外の回転をなくす
-            Vector3 rot = transform.rotation.eulerAngles;
-            rot.x = 0;
-            rot.z = 0;
-            transform.rotation = Quaternion.Euler(rot);
-
-        }
-
-    }
-
->>>>>>> .merge_file_a12204
     public SideState Side
     {
         get
@@ -294,10 +230,7 @@ public class PlayerController : MonoBehaviour
             return m_sideState;
         }
     }
-<<<<<<< .merge_file_a06132
-=======
 
->>>>>>> .merge_file_a12204
     /// <summary>
     /// アニメーションを再生する.
     /// </summary>
@@ -305,7 +238,6 @@ public class PlayerController : MonoBehaviour
     /// <param name="callbackMethod">Callback method.</param>
     public void PlayAnimation(string value, UnityAction callbackMethod)
     {
-<<<<<<< .merge_file_a06132
 
         //強弱どちらのアニメーションをしているのかを判断
         if (value == "Attack1" || value == "Attack2" || value == "Attack3")
@@ -325,14 +257,6 @@ public class PlayerController : MonoBehaviour
             m_attackController.Attack(value, callbackMethod);
             m_isPlayingAnimation = true;
         }
-        
-
-
-=======
-        m_unityEvent.AddListener(callbackMethod); // コールバック関数の登録
-        m_simpleAnimation.CrossFade(value, 0.2f);
-        m_isPlayingAnimation = true;
->>>>>>> .merge_file_a12204
     }
 
     /// <summary>
@@ -340,7 +264,6 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void OnAnimationFinished()
     {
-<<<<<<< .merge_file_a06132
         m_unityEvent.Invoke();              // 登録されているコールバック関数の呼び出し
         m_unityEvent.RemoveAllListeners();  // 登録されていた関数を削除
         m_swordAnimation1 = false;
@@ -353,9 +276,7 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     /*public void StartAttack()
     {
-
         m_swordAttackCollider.enabled = true;
-
     }
 
     /// <summary>
@@ -364,7 +285,6 @@ public class PlayerController : MonoBehaviour
     public void EndAttack()
     {
         m_swordAttackCollider.enabled = false;
-
     }
     */
 
@@ -449,10 +369,3 @@ public class PlayerController : MonoBehaviour
         }
     }
 }
-=======
-        m_unityEvent.Invoke();    // 登録されているコールバック関数の呼び出し
-        m_unityEvent.RemoveAllListeners(); // 登録されていた関数を削除
-        m_isPlayingAnimation = false;  // フラグをfalseに戻す
-    }
-}
->>>>>>> .merge_file_a12204

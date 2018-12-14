@@ -123,7 +123,7 @@ public class SelectManager : MonoBehaviour
                     m_startText.enabled = true;
                 }
                 PlayerController pc = m_charcter[0].GetComponent<PlayerController>();
-                pc.m_Target = Camera.main.gameObject;
+                pc.m_target = Camera.main.gameObject;
             }
         }
         else
@@ -133,7 +133,7 @@ public class SelectManager : MonoBehaviour
                 m_selectFinished[0] = false;
                 m_startText.enabled = false;
                 PlayerController pc = m_charcter[0].GetComponent<PlayerController>();
-                pc.m_Target = gameObject;
+                pc.m_target = gameObject;
             }
         }
 
@@ -178,7 +178,7 @@ public class SelectManager : MonoBehaviour
                 {
                     m_startText.enabled = true;
                     PlayerController pc = m_charcter[1].GetComponent<PlayerController>();
-                    pc.m_Target = Camera.main.gameObject;
+                    pc.m_target = Camera.main.gameObject;
                 }
             }
         }
@@ -189,7 +189,7 @@ public class SelectManager : MonoBehaviour
                 m_selectFinished[1] = false;
                 m_startText.enabled = false;
                 PlayerController pc = m_charcter[1].GetComponent<PlayerController>();
-                pc.m_Target = gameObject;
+                pc.m_target = gameObject;
             }
         }
 
@@ -206,7 +206,7 @@ public class SelectManager : MonoBehaviour
             m_loadedCharcter[0] = m_1PSelect;
             Destroy(m_charcter[0]); //破棄
             m_charcter[0] = Instantiate(m_charcterPrefabs[m_1PSelect], m_1PPosition, Quaternion.Euler(Vector3.right));
-            m_charcter[0].GetComponent<PlayerController>().m_Target = gameObject;
+            m_charcter[0].GetComponent<PlayerController>().m_target = gameObject;
         }
 
         if (m_loadedCharcter[1] != m_2PSelect)  //違うキャラなら読み込み
@@ -214,7 +214,7 @@ public class SelectManager : MonoBehaviour
             m_loadedCharcter[1] = m_2PSelect;
             Destroy(m_charcter[1]); //破棄
             m_charcter[1] = Instantiate(m_charcterPrefabs[m_2PSelect], m_2PPosition, Quaternion.Euler(Vector3.left));
-            m_charcter[1].GetComponent<PlayerController>().m_Target = gameObject;
+            m_charcter[1].GetComponent<PlayerController>().m_target = gameObject;
         }
         //1P2Pとも選択されている状態
 
