@@ -9,37 +9,40 @@ public class SelectManager : MonoBehaviour
 {
 
     [SerializeField]
-    GameObject[] m_charcterPrefabs;  //キャラクターのプレハブ群
+    GameObject[] m_charcterPrefabs;               //キャラクターのプレハブ群
+    [SerializeField]
+    GameObject[] m_weaponPrefabs;                 //武器のプレファブ群
     GameObject[] m_charcter = new GameObject[2];  //インスタンス化したキャラを保持する
+    GameObject[] m_weapon = new GameObject[2];    //インスタンス化した武器を保持する
     int[] m_loadedCharcter = new int[2];          //ロードしたキャラの保存
     bool[] m_selectFinished = new bool[2];        //選択が完了したか
 
     [SerializeField]
-    Vector3 m_1PPosition;       //キャラの表示位置 
+    Vector3 m_1PPosition;                         //キャラの表示位置 
 
     [SerializeField]
-    Vector3 m_2PPosition;       //キャラの表示位置
+    Vector3 m_2PPosition;                         //キャラの表示位置
 
     [SerializeField]
-    RectTransform m_1PCursor;         //1Pカーソル
+    RectTransform m_1PCursor;                     //1Pカーソル
 
     [SerializeField]
-    RectTransform m_2PCursor;//2Pカーソル
+    RectTransform m_2PCursor;                     //2Pカーソル
 
     [SerializeField]
-    Text m_startText;        //スタート用テキスト
+    Text m_startText;                             //スタート用テキスト
 
     [SerializeField]
-    int m_charcterNum;      //キャラの数
+    int m_charcterNum;                            //キャラの数
 
     [SerializeField]
-    float m_cursorDistance;   //カーソルの移動量
+    float m_cursorDistance;                       //カーソルの移動量
 
-    int m_1PSelect;     //1Pが選択しているキャラ番号
-    int m_2PSelect;     //2Pが選択しているキャラ番号
+    int m_1PSelect;                               //1Pが選択しているキャラ番号
+    int m_2PSelect;                               //2Pが選択しているキャラ番号
 
-    Vector3 m_1PCursorDefaultPosition;  //1Pカーソルのデフォルト位置
-    Vector3 m_2PCursorDefaultPosition;  //2Pカーソルのデフォルト位置
+    Vector3 m_1PCursorDefaultPosition;            //1Pカーソルのデフォルト位置
+    Vector3 m_2PCursorDefaultPosition;            //2Pカーソルのデフォルト位置
 
     enum State
     {
@@ -56,7 +59,7 @@ public class SelectManager : MonoBehaviour
         m_2PCursorDefaultPosition = m_2PCursor.anchoredPosition;
 
         //2Pは一番最後のキャラを選択している
-        m_2PSelect = m_charcterNum - 1;
+        m_2PSelect = m_charcterNum - 2;
         //2Pカーソルの位置を初期化
         m_2PCursor.anchoredPosition = m_2PCursorDefaultPosition + new Vector3(m_2PSelect * m_cursorDistance, 0, 0);
         //スタート用テキストの非表示
@@ -69,6 +72,8 @@ public class SelectManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bool is1PCanceled = false;
+        bool is2PCanceled = false;
 
         // 選択が完了しているなら抜ける
         if (m_state == State.Selected)
@@ -93,9 +98,7 @@ public class SelectManager : MonoBehaviour
 
                 Destroy(m_charcter[0]); //破棄
                 Destroy(m_charcter[1]); //破棄
-
                 m_state = State.Selected;
-
                 return;
             }
         }
@@ -114,7 +117,7 @@ public class SelectManager : MonoBehaviour
             {
                 m_1PSelect--;
             }
-
+            //決定の処理
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 m_selectFinished[0] = true;
@@ -124,23 +127,26 @@ public class SelectManager : MonoBehaviour
                 }
                 PlayerController pc = m_charcter[0].GetComponent<PlayerController>();
                 pc.m_target = Camera.main.gameObject;
+                is1PCanceled = true;
+                Debug.Log("1Pキャラクター選択");
             }
         }
         else
         {
+            //キャンセルの処理
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 m_selectFinished[0] = false;
                 m_startText.enabled = false;
                 PlayerController pc = m_charcter[0].GetComponent<PlayerController>();
                 pc.m_target = gameObject;
+                Debug.Log("1P選択のキャンセル");
             }
         }
 
         //上限下限チェックを一括でできる
         //Mathf.Clamp(設定したい変数 , 下限 , 上限)
         m_1PSelect = Mathf.Clamp(m_1PSelect, 0, m_charcterNum - 1);
-
         m_1PCursor.anchoredPosition = m_1PCursorDefaultPosition + new Vector3(m_1PSelect * m_cursorDistance, 0, 0);
 
 
@@ -159,7 +165,6 @@ public class SelectManager : MonoBehaviour
                 */
             }
 
-
             // 2Pカーソル左移動
             else if (Input.GetKeyDown(KeyCode.A))
             {
@@ -171,6 +176,7 @@ public class SelectManager : MonoBehaviour
                 }
                 */
             }
+            //決定の処理
             if (Input.GetKeyDown(KeyCode.W))
             {
                 m_selectFinished[1] = true;
@@ -179,36 +185,39 @@ public class SelectManager : MonoBehaviour
                     m_startText.enabled = true;
                     PlayerController pc = m_charcter[1].GetComponent<PlayerController>();
                     pc.m_target = Camera.main.gameObject;
+                    is2PCanceled = true;
+                    Debug.Log("2Pキャラクター選択");
                 }
             }
         }
         else
         {
+            //キャンセルの処理
             if (Input.GetKeyDown(KeyCode.S))
             {
                 m_selectFinished[1] = false;
                 m_startText.enabled = false;
                 PlayerController pc = m_charcter[1].GetComponent<PlayerController>();
                 pc.m_target = gameObject;
+                Debug.Log("2P選択のキャンセル");
             }
         }
-
+        //上限下限チェックを一括でできる
+        //Mathf.Clamp(設定したい変数 , 下限 , 上限)
         m_2PSelect = Mathf.Clamp(m_2PSelect, 0, m_charcterNum - 1);
-
-
-
         m_2PCursor.anchoredPosition = m_2PCursorDefaultPosition + new Vector3(m_2PSelect * m_cursorDistance, 0, 0);
 
         // キャラクターのロード
-
+        //1Pの選択処理
         if (m_loadedCharcter[0] != m_1PSelect)   //違うキャラなら読み込み
         {
             m_loadedCharcter[0] = m_1PSelect;
             Destroy(m_charcter[0]); //破棄
             m_charcter[0] = Instantiate(m_charcterPrefabs[m_1PSelect], m_1PPosition, Quaternion.Euler(Vector3.right));
             m_charcter[0].GetComponent<PlayerController>().m_target = gameObject;
+            
         }
-
+        //2Pの選択処理
         if (m_loadedCharcter[1] != m_2PSelect)  //違うキャラなら読み込み
         {
             m_loadedCharcter[1] = m_2PSelect;
@@ -216,8 +225,14 @@ public class SelectManager : MonoBehaviour
             m_charcter[1] = Instantiate(m_charcterPrefabs[m_2PSelect], m_2PPosition, Quaternion.Euler(Vector3.left));
             m_charcter[1].GetComponent<PlayerController>().m_target = gameObject;
         }
-        //1P2Pとも選択されている状態
-
+        //1Pと2Pがどちらも選択されていなかったら
+        if (!m_selectFinished[0] && !m_selectFinished[1]&& is1PCanceled==false&&is2PCanceled==false)
+        {
+            if(Input.GetKeyDown(KeyCode.DownArrow)||Input.GetKeyDown(KeyCode.S))
+            {
+                SceneManager.LoadScene("Title");
+            }
+        }
     }
 
     /// <summary>
@@ -226,12 +241,12 @@ public class SelectManager : MonoBehaviour
     void OnTransitionFinished()
     {
         //データの保存
-        //PlayerPrefs.SetInt("Character1", m_1PSelect);
-        //PlayerPrefs.SetInt("Character2", m_2PSelect);
-        //PlayerPrefs.Save();
+        PlayerPrefs.SetInt("Character1", m_1PSelect);
+        PlayerPrefs.SetInt("Character2", m_2PSelect);
+        PlayerPrefs.Save();
         //データのロード
-        //m_1PSelect = PlayerPrefs.GetInt("Character1");
-        //m_2PSelect = PlayerPrefs.GetInt("Character2");
+        m_1PSelect = PlayerPrefs.GetInt("Character1");
+        m_2PSelect = PlayerPrefs.GetInt("Character2");
 
         //シーンの切り替え
         SceneManager.LoadScene("Game");
@@ -244,5 +259,4 @@ public class SelectManager : MonoBehaviour
         m_loadedCharcter[0] = -1;
         m_loadedCharcter[1] = -1;
     }
-
 }
